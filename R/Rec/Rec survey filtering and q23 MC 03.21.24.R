@@ -104,7 +104,7 @@ q23usa
 
 
 ### mex
-q23mex <- ggplot(dat, aes(x=Q23)) +
+q23mex <- ggplot(mex, aes(x=Q23)) +
   geom_bar(fill = "darkgreen") + theme_classic() +
   labs(x = "How many fish do you commonly catch per day?",
        y = "Count",  title = "Mex")
