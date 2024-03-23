@@ -356,10 +356,10 @@ sppn <- c(nrow(amberj),nrow(black),nrow(cobia),nrow(false),nrow(floun),
           nrow(group),nrow(crev),nrow(mahi),nrow(mack),nrow(pomp),nrow(reddrum),
           nrow(sail),nrow(shark),nrow(sheep),nrow(snapper),nrow(snooks),
           nrow(trout),nrow(tarpons),nrow(triple),nrow(tuna),nrow(wahoo))
-speciesn <- data.frame(spp, sppn)
+q21speciesnall <- data.frame(spp, sppn)
 
 ## bar plot
-ggplot(data=speciesn, aes(x=spp, y=sppn)) +
+ggplot(data=q21speciesnall, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "steelblue") +
   theme_classic() +
   labs(x = "What are your top 3 most caught species?", y = "Count") +
@@ -545,10 +545,10 @@ sppn <- c(nrow(amberj),nrow(black),nrow(cobia),nrow(false),nrow(floun),
           nrow(group),nrow(crev),nrow(mahi),nrow(mack),nrow(pomp),nrow(reddrum),
           nrow(sail),nrow(shark),nrow(sheep),nrow(snapper),nrow(snooks),
           nrow(trout),nrow(tarpons),nrow(triple),nrow(tuna),nrow(wahoo))
-speciesn <- data.frame(spp, sppn)
+q21speciesnmex <- data.frame(spp, sppn)
 
 ## bar plot
-ggplot(data=speciesn, aes(x=spp, y=sppn)) +
+ggplot(data=q21speciesnmex, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "darkgreen") +
   theme_classic() +
   labs(x = "What are your top 3 most caught species?", y = "Count", title = "Mex") +
@@ -730,10 +730,10 @@ sppn <- c(nrow(amberj),nrow(black),nrow(cobia),nrow(false),nrow(floun),
           nrow(group),nrow(crev),nrow(mahi),nrow(mack),nrow(pomp),nrow(reddrum),
           nrow(sail),nrow(shark),nrow(sheep),nrow(snapper),nrow(snooks),
           nrow(trout),nrow(tarpons),nrow(triple),nrow(tuna),nrow(wahoo))
-speciesn <- data.frame(spp, sppn)
+q21speciesnusa <- data.frame(spp, sppn)
 
 ## bar plot
-ggplot(data=speciesn, aes(x=spp, y=sppn)) +
+ggplot(data=q21speciesnusa, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "darkred") +
   theme_classic() +
   labs(x = "What are your top 3 most caught species?", y = "Count", title = "USA") +
@@ -745,7 +745,631 @@ ggplot(data=speciesn, aes(x=spp, y=sppn)) +
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # END of Q21
+################################################################################
+#### Q47 What are your top 3 target spp?
+#### not in order RIGHT? So can look for frequency
+dat$Q47_0_GROUP
+
+### these tell you what position each spp was ranked when placed in the top 3
+### What is the difference between "" and Unanswered????
+### Maybe "" means it wasn't picked and Unanswered means the question wasn't answered????
+
+dat$Q47_0_1_RANK # Amberjack
+dat$Q47_0_2_RANK # Black drum
+dat$Q47_0_3_RANK # Cobia
+dat$Q47_0_4_RANK # false albacore / bonito
+dat$Q47_0_5_RANK # flounder
+dat$Q47_0_6_RANK # Grouper
+dat$Q47_0_7_RANK # Jack crevalle
+dat$Q47_0_8_RANK # Mahi
+dat$Q47_0_9_RANK # Mackerels
+dat$Q47_0_10_RANK # Pompano
+dat$Q47_0_11_RANK # red drum
+dat$Q47_0_12_RANK # sailfish
+dat$Q47_0_13_RANK # sharks
+dat$Q47_0_14_RANK # sheepshead
+dat$Q47_0_15_RANK # snapper
+dat$Q47_0_16_RANK # spotted seatrout
+dat$Q47_0_17_RANK # tripletail
+dat$Q47_0_18_RANK # tuna
+dat$Q47_0_19_RANK # wahoo
+dat$Q47_0_20_RANK # other
+dat$Q47_0_21_RANK # other
+dat$Q47_0_22_RANK # other
+
+dat$Q47_20_TEXT # alot of snook and tarpon here!!!!!!
+dat$Q47_21_TEXT # more snook and tarpon. also saw triggerfish and macabi (bonefish)
+dat$Q47_22_TEXT # more snook
+### the fact that snook/robalo was found in all 3 text options leads me to
+### believe we should have included this species
+### snook are captured in inshore waters in both USA and MEX
+
+### verify that tarpon is on all 3 text columns
+
+
+
+### we can use this to figure out how many time species were selected
+q47unanswered <- dat[grep("Unanswered", dat$Q47_0_GROUP), ]
+q47unanswered$Q47_0_GROUP
+nrow(q47unanswered) # number of surveys that didn't answer Q21
+q47unanswered$Q47_0_1_RANK
+q21unanswered$Q47_0_19_RANK
+### when Unanswered is in the group column, it means the question was not answered
+### this means we can ignore the Unanswered after noting its sample size
+
+q47answered <- dat[grep("Unanswered", dat$Q47_0_GROUP, invert = TRUE), ]
+q47answered$Q47_0_GROUP
+nrow(q47answered) # number of surveys that answered Q47
+
+
+
+
+
+### filtering for surveys that included a specific species
+amberj <- dat[grep("Amber", dat$Q47_0_GROUP), ]
+amberj$Q47_0_GROUP
+nrow(amberj)
+table(amberj$Q44)
+
+black <- dat[grep("Black", dat$Q47_0_GROUP), ]
+black$Q47_0_GROUP
+nrow(black)
+table(black$Q44)
+
+cobia <- dat[grep("Cobia", dat$Q47_0_GROUP), ]
+cobia$Q47_0_GROUP
+nrow(cobia)
+table(cobia$Q44)
+
+false <- dat[grep("False", dat$Q47_0_GROUP), ]
+false$Q47_0_GROUP
+nrow(false)
+table(false$Q44)
+
+floun <- dat[grep("Flounder", dat$Q47_0_GROUP), ]
+floun$Q47_0_GROUP
+nrow(floun)
+table(floun$Q44)
+
+group <- dat[grep("Grouper", dat$Q47_0_GROUP), ]
+group$Q47_0_GROUP
+nrow(group)
+table(group$Q44)
+
+crev <- dat[grep("Crevalle", dat$Q47_0_GROUP), ]
+crev$Q47_0_GROUP
+nrow(crev)
+table(crev$Q44)
+
+mahi <- dat[grep("Mahi", dat$Q47_0_GROUP), ]
+mahi$Q47_0_GROUP
+nrow(mahi)
+table(mahi$Q44)
+
+mack <- dat[grep("Mack", dat$Q47_0_GROUP), ]
+mack$Q47_0_GROUP
+nrow(mack)
+table(mack$Q44)
+
+pomp <- dat[grep("Pompano", dat$Q47_0_GROUP), ]
+pomp$Q47_0_GROUP
+nrow(pomp)
+table(pomp$Q44)
+
+reddrum <- dat[grep("Red Drum", dat$Q47_0_GROUP), ]
+reddrum$Q47_0_GROUP
+nrow(reddrum)
+table(reddrum$Q44) ### all red drum answers are form USA
+
+sail <- dat[grep("Sailf", dat$Q47_0_GROUP), ]
+sail$Q47_0_GROUP
+nrow(sail)
+table(sail$Q44)
+
+shark <- dat[grep("Shark", dat$Q47_0_GROUP), ]
+shark$Q47_0_GROUP
+nrow(shark)
+table(shark$Q44)
+
+sheep <- dat[grep("Sheeps", dat$Q47_0_GROUP), ]
+sheep$Q47_0_GROUP
+nrow(sheep)
+table(sheep$Q44)
+
+snapper <- dat[grep("Snapper", dat$Q47_0_GROUP), ]
+snapper$Q47_0_GROUP
+nrow(snapper)
+table(snapper$Q44) ### selected in both USA and MEX
+
+trout <- dat[grep("Spotted", dat$Q47_0_GROUP), ]
+trout$Q47_0_GROUP
+nrow(trout)
+table(trout$Q44)
+
+triple <- dat[grep("Triple", dat$Q47_0_GROUP), ]
+triple$Q47_0_GROUP
+nrow(triple)
+table(triple$Q44)
+
+tuna <- dat[grep("Tuna", dat$Q47_0_GROUP), ]
+tuna$Q47_0_GROUP
+nrow(tuna)
+table(tuna$Q44)
+
+wahoo <- dat[grep("Wahoo", dat$Q47_0_GROUP), ]
+wahoo$Q47_0_GROUP
+nrow(wahoo)
+table(wahoo$Q44)
+
+
+
+#### adding other species stated in TEXT
+table(dat$Q47_20_TEXT) # snook and tarpon are the only ones that have n>5
+table(dat$Q47_21_TEXT) # snook and tarpon are the only ones that have n>5
+table(dat$Q47_22_TEXT)
+
+
+### Snook
+snooknames <- c("Common snook", "Robalo", "Robalo ", "Robalo blanco","snook",
+                "Snook", "Snook ", "robalo")
+# these are all of the names I saw in the 3 tect columns that refer to snook
+
+snook1 <- filter(dat, grepl(paste(snooknames, collapse='|'), Q47_20_TEXT))
+table(snook1$Q47_20_TEXT) # only column that should have any of the results
+table(snook1$Q47_21_TEXT)
+table(snook1$Q47_22_TEXT)
+
+snook2 <- filter(dat, grepl(paste(snooknames, collapse='|'), Q47_21_TEXT))
+table(snook2$Q47_20_TEXT)
+table(snook2$Q47_21_TEXT) # only column that should have any of the results
+table(snook2$Q47_22_TEXT)
+
+snook3 <- filter(dat, grepl(paste(snooknames, collapse='|'), Q47_22_TEXT))
+table(snook3$Q47_20_TEXT)
+table(snook3$Q47_21_TEXT)
+table(snook3$Q47_22_TEXT) # only column that should have any of the results
+
+snooklist <- list(snook1, snook2, snook3)
+snooks <- Reduce(function(x, y) merge(x, y, all=TRUE), snooklist)  
+nrow(snooks)
+nrow(snook1) + nrow(snook2) + nrow(snook3) # should equal line above
+
+
+## tarpon
+tarponnames <- c("Sábalo","Sabalo ","tarpo","Tarpon", "Sabalo", "Tarpon ",
+                 "Trapon","sabalo", "tarpon")
+# these are all of the names I saw in the 3 tect columns that refer to tarpon
+
+tarpon1 <- filter(dat, grepl(paste(tarponnames, collapse='|'), Q47_20_TEXT))
+table(tarpon1$Q47_20_TEXT) # only column that should have any of the results
+table(tarpon1$Q47_21_TEXT)
+table(tarpon1$Q47_22_TEXT)
+
+tarpon2 <- filter(dat, grepl(paste(tarponnames, collapse='|'), Q47_21_TEXT))
+table(tarpon2$Q47_20_TEXT)
+table(tarpon2$Q47_21_TEXT) # only column that should have any of the results
+table(tarpon2$Q47_22_TEXT)
+
+tarpon3 <- filter(dat, grepl(paste(tarponnames, collapse='|'), Q47_22_TEXT))
+table(tarpon3$Q47_20_TEXT)
+table(tarpon3$Q47_21_TEXT)
+table(tarpon3$Q47_22_TEXT) # only column that should have any of the results
+
+tarponlist <- list(tarpon1, tarpon2, tarpon3)
+tarpons <- Reduce(function(x, y) merge(x, y, all=TRUE), tarponlist)  
+nrow(tarpons)
+nrow(tarpon1) + nrow(tarpon2) + nrow(tarpon3) # should equal line above
+
+
+
+### bar plot with spp frequencies
+spp <- c("Amberjack","Black Drum","Cobia","False Albacore","Flounder","Grouper",
+         "Jack Crevalle","Mahi Mahi","Mackerels","Pompano","Red Drum","Sailfish",
+         "Sharks","Sheepshead","Snappers","Snooks","Spotted Seatrout","Tarpon",
+         "Tripletail","Tuna","Wahoo")
+sppn <- c(nrow(amberj),nrow(black),nrow(cobia),nrow(false),nrow(floun),
+          nrow(group),nrow(crev),nrow(mahi),nrow(mack),nrow(pomp),nrow(reddrum),
+          nrow(sail),nrow(shark),nrow(sheep),nrow(snapper),nrow(snooks),
+          nrow(trout),nrow(tarpons),nrow(triple),nrow(tuna),nrow(wahoo))
+q47speciesnall <- data.frame(spp, sppn)
+
+## bar plot
+ggplot(data=q47speciesnall, aes(x=spp, y=sppn)) +
+  geom_bar(stat="identity", fill = "steelblue") +
+  theme_classic() +
+  labs(x = "What are your 3 top target species?", y = "Count") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q47all.png", width = 10, height = 8, dpi = 1000)
+
+
+
+#### MEX only
+mex <- dat[dat$Q44 == "Mexico",]
+
+amberj <- mex[grep("Amber", mex$Q47_0_GROUP), ]
+amberj$Q47_0_GROUP
+nrow(amberj)
+table(amberj$Q44)
+
+black <- mex[grep("Black", mex$Q47_0_GROUP), ]
+black$Q47_0_GROUP
+nrow(black)
+table(black$Q44)
+
+cobia <- mex[grep("Cobia", mex$Q47_0_GROUP), ]
+cobia$Q47_0_GROUP
+nrow(cobia)
+table(cobia$Q44)
+
+false <- mex[grep("False", mex$Q47_0_GROUP), ]
+false$Q47_0_GROUP
+nrow(false)
+table(false$Q44)
+
+floun <- mex[grep("Flounder", mex$Q47_0_GROUP), ]
+floun$Q47_0_GROUP
+nrow(floun)
+table(floun$Q44)
+
+group <- mex[grep("Grouper", mex$Q47_0_GROUP), ]
+group$Q47_0_GROUP
+nrow(group)
+table(group$Q44)
+
+crev <- mex[grep("Crevalle", mex$Q47_0_GROUP), ]
+crev$Q47_0_GROUP
+nrow(crev)
+table(crev$Q44)
+
+mahi <- mex[grep("Mahi", mex$Q47_0_GROUP), ]
+mahi$Q47_0_GROUP
+nrow(mahi)
+table(mahi$Q44)
+
+mack <- mex[grep("Mack", mex$Q47_0_GROUP), ]
+mack$Q47_0_GROUP
+nrow(mack)
+table(mack$Q44)
+
+pomp <- mex[grep("Pompano", mex$Q47_0_GROUP), ]
+pomp$Q47_0_GROUP
+nrow(pomp)
+table(pomp$Q44)
+
+reddrum <- mex[grep("Red Drum", mex$Q47_0_GROUP), ]
+reddrum$Q47_0_GROUP
+nrow(reddrum)
+table(reddrum$Q44) ### all red drum answers are form USA
+
+sail <- mex[grep("Sailf", mex$Q47_0_GROUP), ]
+sail$Q47_0_GROUP
+nrow(sail)
+table(sail$Q44)
+
+shark <- mex[grep("Shark", mex$Q47_0_GROUP), ]
+shark$Q47_0_GROUP
+nrow(shark)
+table(shark$Q44)
+
+sheep <- mex[grep("Sheeps", mex$Q47_0_GROUP), ]
+sheep$Q47_0_GROUP
+nrow(sheep)
+table(sheep$Q44)
+
+snapper <- mex[grep("Snapper", mex$Q47_0_GROUP), ]
+snapper$Q47_0_GROUP
+nrow(snapper)
+table(snapper$Q44) ### selected in both USA and MEX
+
+trout <- mex[grep("Spotted", mex$Q47_0_GROUP), ]
+trout$Q47_0_GROUP
+nrow(trout)
+table(trout$Q44)
+
+triple <- mex[grep("Triple", mex$Q47_0_GROUP), ]
+triple$Q47_0_GROUP
+nrow(triple)
+table(triple$Q44)
+
+tuna <- mex[grep("Tuna", mex$Q47_0_GROUP), ]
+tuna$Q47_0_GROUP
+nrow(tuna)
+table(tuna$Q44)
+
+wahoo <- mex[grep("Wahoo", mex$Q47_0_GROUP), ]
+wahoo$Q47_0_GROUP
+nrow(wahoo)
+table(wahoo$Q44)
+
+
+
+#### adding other species stated in TEXT
+table(mex$Q47_20_TEXT) # snook and tarpon are the only ones that have n>5
+table(mex$Q47_21_TEXT) # snook and tarpon are the only ones that have n>5
+table(mex$Q47_22_TEXT)
+
+
+### Snook
+snooknames <- c("Common snook", "Robalo", "Robalo ", "Robalo blanco","snook",
+                "Snook", "Snook ", "robalo")
+# these are all of the names I saw in the 3 tect columns that refer to snook
+
+snook1 <- filter(mex, grepl(paste(snooknames, collapse='|'), Q47_20_TEXT))
+table(snook1$Q47_20_TEXT) # only column that should have any of the results
+table(snook1$Q47_21_TEXT)
+table(snook1$Q47_22_TEXT)
+
+snook2 <- filter(mex, grepl(paste(snooknames, collapse='|'), Q47_21_TEXT))
+table(snook2$Q47_20_TEXT)
+table(snook2$Q47_21_TEXT) # only column that should have any of the results
+table(snook2$Q47_22_TEXT)
+
+snook3 <- filter(mex, grepl(paste(snooknames, collapse='|'), Q47_22_TEXT))
+table(snook3$Q47_20_TEXT)
+table(snook3$Q47_21_TEXT)
+table(snook3$Q47_22_TEXT) # only column that should have any of the results
+
+snooklist <- list(snook1, snook2, snook3)
+snooks <- Reduce(function(x, y) merge(x, y, all=TRUE), snooklist)  
+nrow(snooks)
+nrow(snook1) + nrow(snook2) + nrow(snook3) # should equal line above
+
+
+## tarpon
+tarponnames <- c("Sábalo","Sabalo ","tarpo","Tarpon", "Sabalo", "Tarpon ",
+                 "Trapon","sabalo", "tarpon")
+# these are all of the names I saw in the 3 tect columns that refer to tarpon
+
+tarpon1 <- filter(mex, grepl(paste(tarponnames, collapse='|'), Q47_20_TEXT))
+table(tarpon1$Q47_20_TEXT) # only column that should have any of the results
+table(tarpon1$Q47_21_TEXT)
+table(tarpon1$Q47_22_TEXT)
+
+tarpon2 <- filter(mex, grepl(paste(tarponnames, collapse='|'), Q47_21_TEXT))
+table(tarpon2$Q47_20_TEXT)
+table(tarpon2$Q47_21_TEXT) # only column that should have any of the results
+table(tarpon2$Q47_22_TEXT)
+
+tarpon3 <- filter(mex, grepl(paste(tarponnames, collapse='|'), Q47_22_TEXT))
+table(tarpon3$Q47_20_TEXT)
+table(tarpon3$Q47_21_TEXT)
+table(tarpon3$Q47_22_TEXT) # only column that should have any of the results
+
+tarponlist <- list(tarpon1, tarpon2, tarpon3)
+tarpons <- Reduce(function(x, y) merge(x, y, all=TRUE), tarponlist)  
+nrow(tarpons)
+nrow(tarpon1) + nrow(tarpon2) + nrow(tarpon3) # should equal line above
+
+
+
+### bar plot with spp frequencies
+spp <- c("Amberjack","Black Drum","Cobia","False Albacore","Flounder","Grouper",
+         "Jack Crevalle","Mahi Mahi","Mackerels","Pompano","Red Drum","Sailfish",
+         "Sharks","Sheepshead","Snappers","Snooks","Spotted Seatrout","Tarpon",
+         "Tripletail","Tuna","Wahoo")
+sppn <- c(nrow(amberj),nrow(black),nrow(cobia),nrow(false),nrow(floun),
+          nrow(group),nrow(crev),nrow(mahi),nrow(mack),nrow(pomp),nrow(reddrum),
+          nrow(sail),nrow(shark),nrow(sheep),nrow(snapper),nrow(snooks),
+          nrow(trout),nrow(tarpons),nrow(triple),nrow(tuna),nrow(wahoo))
+q47speciesnmex <- data.frame(spp, sppn)
+
+## bar plot
+ggplot(data=q47speciesnmex, aes(x=spp, y=sppn)) +
+  geom_bar(stat="identity", fill = "darkgreen") +
+  theme_classic() +
+  labs(x = "What are your 3 top target species?", y = "Count", title = "Mex") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q47mex.png", width = 10, height = 8, dpi = 1000)
+
+
+
+###### USA only
+usa <- dat[dat$Q44 == "United States",]
+
+amberj <- usa[grep("Amber", usa$Q47_0_GROUP), ]
+amberj$Q47_0_GROUP
+nrow(amberj)
+table(amberj$Q44)
+
+black <- usa[grep("Black", usa$Q47_0_GROUP), ]
+black$Q47_0_GROUP
+nrow(black)
+table(black$Q44)
+
+cobia <- usa[grep("Cobia", usa$Q47_0_GROUP), ]
+cobia$Q47_0_GROUP
+nrow(cobia)
+table(cobia$Q44)
+
+false <- usa[grep("False", usa$Q47_0_GROUP), ]
+false$Q47_0_GROUP
+nrow(false)
+table(false$Q44)
+
+floun <- usa[grep("Flounder", usa$Q47_0_GROUP), ]
+floun$Q47_0_GROUP
+nrow(floun)
+table(floun$Q44)
+
+group <- usa[grep("Grouper", usa$Q47_0_GROUP), ]
+group$Q47_0_GROUP
+nrow(group)
+table(group$Q44)
+
+crev <- usa[grep("Crevalle", usa$Q47_0_GROUP), ]
+crev$Q47_0_GROUP
+nrow(crev)
+table(crev$Q44)
+
+mahi <- usa[grep("Mahi", usa$Q47_0_GROUP), ]
+mahi$Q47_0_GROUP
+nrow(mahi)
+table(mahi$Q44)
+
+mack <- usa[grep("Mack", usa$Q47_0_GROUP), ]
+mack$Q47_0_GROUP
+nrow(mack)
+table(mack$Q44)
+
+pomp <- usa[grep("Pompano", usa$Q47_0_GROUP), ]
+pomp$Q47_0_GROUP
+nrow(pomp)
+table(pomp$Q44)
+
+reddrum <- usa[grep("Red Drum", usa$Q47_0_GROUP), ]
+reddrum$Q47_0_GROUP
+nrow(reddrum)
+table(reddrum$Q44) ### all red drum answers are form USA
+
+sail <- usa[grep("Sailf", usa$Q47_0_GROUP), ]
+sail$Q47_0_GROUP
+nrow(sail)
+table(sail$Q44)
+
+shark <- usa[grep("Shark", usa$Q47_0_GROUP), ]
+shark$Q47_0_GROUP
+nrow(shark)
+table(shark$Q44)
+
+sheep <- usa[grep("Sheeps", usa$Q47_0_GROUP), ]
+sheep$Q47_0_GROUP
+nrow(sheep)
+table(sheep$Q44)
+
+snapper <- usa[grep("Snapper", usa$Q47_0_GROUP), ]
+snapper$Q47_0_GROUP
+nrow(snapper)
+table(snapper$Q44) ### selected in both USA and usa
+
+trout <- usa[grep("Spotted", usa$Q47_0_GROUP), ]
+trout$Q47_0_GROUP
+nrow(trout)
+table(trout$Q44)
+
+triple <- usa[grep("Triple", usa$Q47_0_GROUP), ]
+triple$Q47_0_GROUP
+nrow(triple)
+table(triple$Q44)
+
+tuna <- usa[grep("Tuna", usa$Q47_0_GROUP), ]
+tuna$Q47_0_GROUP
+nrow(tuna)
+table(tuna$Q44)
+
+wahoo <- usa[grep("Wahoo", usa$Q47_0_GROUP), ]
+wahoo$Q47_0_GROUP
+nrow(wahoo)
+table(wahoo$Q44)
+
+
+
+#### adding other species stated in TEXT
+table(usa$Q47_20_TEXT) # snook and tarpon are the only ones that have n>5
+table(usa$Q47_21_TEXT) # snook and tarpon are the only ones that have n>5
+table(usa$Q47_22_TEXT)
+
+
+### Snook
+snooknames <- c("Common snook", "Robalo", "Robalo ", "Robalo blanco","snook",
+                "Snook", "Snook ", "robalo")
+# these are all of the names I saw in the 3 tect columns that refer to snook
+
+snook1 <- filter(usa, grepl(paste(snooknames, collapse='|'), Q47_20_TEXT))
+table(snook1$Q47_20_TEXT) # only column that should have any of the results
+table(snook1$Q47_21_TEXT)
+table(snook1$Q47_22_TEXT)
+
+snook2 <- filter(usa, grepl(paste(snooknames, collapse='|'), Q47_21_TEXT))
+table(snook2$Q47_20_TEXT)
+table(snook2$Q47_21_TEXT) # only column that should have any of the results
+table(snook2$Q47_22_TEXT)
+
+snook3 <- filter(usa, grepl(paste(snooknames, collapse='|'), Q47_22_TEXT))
+table(snook3$Q47_20_TEXT)
+table(snook3$Q47_21_TEXT)
+table(snook3$Q47_22_TEXT) # only column that should have any of the results
+
+snooklist <- list(snook1, snook2, snook3)
+snooks <- Reduce(function(x, y) merge(x, y, all=TRUE), snooklist)  
+nrow(snooks)
+nrow(snook1) + nrow(snook2) + nrow(snook3) # should equal line above
+
+
+## tarpon
+tarponnames <- c("Sábalo","Sabalo ","tarpo","Tarpon", "Sabalo", "Tarpon ",
+                 "Trapon","sabalo", "tarpon")
+# these are all of the names I saw in the 3 tect columns that refer to tarpon
+
+tarpon1 <- filter(usa, grepl(paste(tarponnames, collapse='|'), Q47_20_TEXT))
+table(tarpon1$Q47_20_TEXT) # only column that should have any of the results
+table(tarpon1$Q47_21_TEXT)
+table(tarpon1$Q47_22_TEXT)
+
+tarpon2 <- filter(usa, grepl(paste(tarponnames, collapse='|'), Q47_21_TEXT))
+table(tarpon2$Q47_20_TEXT)
+table(tarpon2$Q47_21_TEXT) # only column that should have any of the results
+table(tarpon2$Q47_22_TEXT)
+
+tarpon3 <- filter(usa, grepl(paste(tarponnames, collapse='|'), Q47_22_TEXT))
+table(tarpon3$Q47_20_TEXT)
+table(tarpon3$Q47_21_TEXT)
+table(tarpon3$Q47_22_TEXT) # only column that should have any of the results
+
+tarponlist <- list(tarpon1, tarpon2, tarpon3)
+tarpons <- Reduce(function(x, y) merge(x, y, all=TRUE), tarponlist)  
+nrow(tarpons)
+nrow(tarpon1) + nrow(tarpon2) + nrow(tarpon3) # should equal line above
+
+
+
+### bar plot with spp frequencies
+spp <- c("Amberjack","Black Drum","Cobia","False Albacore","Flounder","Grouper",
+         "Jack Crevalle","Mahi Mahi","Mackerels","Pompano","Red Drum","Sailfish",
+         "Sharks","Sheepshead","Snappers","Snooks","Spotted Seatrout","Tarpon",
+         "Tripletail","Tuna","Wahoo")
+sppn <- c(nrow(amberj),nrow(black),nrow(cobia),nrow(false),nrow(floun),
+          nrow(group),nrow(crev),nrow(mahi),nrow(mack),nrow(pomp),nrow(reddrum),
+          nrow(sail),nrow(shark),nrow(sheep),nrow(snapper),nrow(snooks),
+          nrow(trout),nrow(tarpons),nrow(triple),nrow(tuna),nrow(wahoo))
+q47speciesnusa <- data.frame(spp, sppn)
+
+## bar plot
+ggplot(data=q47speciesnusa, aes(x=spp, y=sppn)) +
+  geom_bar(stat="identity", fill = "darkred") +
+  theme_classic() +
+  labs(x = "What are your 3 top target species?", y = "Count", title = "USA") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q47usa.png", width = 10, height = 8, dpi = 1000)
+
+
+
+
+#### end Q47
 ################################################################################
 
 
