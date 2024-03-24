@@ -100,7 +100,7 @@ q23byresid
 q23usa <- ggplot(usa, aes(x=Q23)) +
   geom_bar(fill = "darkred") + theme_classic() +
   labs(x = "How many fish do you commonly catch per day?",
-       y = "Count", title = "USA")
+       y = "Count", title = "USA n=106")
 q23usa
 #ggsave("q23usa.png", width = 10, height = 8, dpi = 1000)
 
@@ -109,15 +109,15 @@ q23usa
 q23mex <- ggplot(mex, aes(x=Q23)) +
   geom_bar(fill = "darkgreen") + theme_classic() +
   labs(x = "How many fish do you commonly catch per day?",
-       y = "Count",  title = "Mex")
+       y = "Count",  title = "Mex n=55")
 q23mex
 #ggsave("q23mex.png", width = 10, height = 8, dpi = 1000)
 
 
 ### merged plot. first remove individual axis labels
 q23byresid <- q23byresid + xlab(NULL) + ylab(NULL)
-q23mex <- q23mex + xlab(NULL) + ylab(NULL)
-q23usa <- q23usa + xlab(NULL) +ylab(NULL)
+q23mex <- q23mex + xlab(NULL) + ylab(NULL) # need to remove title
+q23usa <- q23usa + xlab(NULL) +ylab(NULL) #need to remove title
 
 merged <- ggarrange(ggarrange(q23usa, q23mex, ncol = 2), q23byresid, nrow = 2)
 annotate_figure(merged, left = textGrob("Count", rot = 90, vjust = 1, gp = gpar(cex = 1)),
@@ -362,19 +362,10 @@ q21speciesnall <- data.frame(spp, sppn)
 ggplot(data=q21speciesnall, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "steelblue") +
   theme_classic() +
-  labs(x = "What are your top 3 most caught species?", y = "Count") +
+  labs(x = "What are your top 3 most caught species?", y = "Count",
+       title = "All n=162") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 #ggsave("q21all.png", width = 10, height = 8, dpi = 1000)
-
-
-
-
-
-
-
-
-
-
 
 
 #### MEX only
@@ -475,8 +466,6 @@ wahoo$Q21_0_GROUP
 nrow(wahoo)
 table(wahoo$Q44)
 
-
-
 #### adding other species stated in TEXT
 table(mex$Q21_20_TEXT) # snook and tarpon are the only ones that have n>5
 table(mex$Q21_21_TEXT) # snook and tarpon are the only ones that have n>5
@@ -535,7 +524,6 @@ nrow(tarpons)
 nrow(tarpon1) + nrow(tarpon2) + nrow(tarpon3) # should equal line above
 
 
-
 ### bar plot with spp frequencies
 spp <- c("Amberjack","Black Drum","Cobia","False Albacore","Flounder","Grouper",
          "Jack Crevalle","Mahi Mahi","Mackerels","Pompano","Red Drum","Sailfish",
@@ -551,14 +539,10 @@ q21speciesnmex <- data.frame(spp, sppn)
 ggplot(data=q21speciesnmex, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "darkgreen") +
   theme_classic() +
-  labs(x = "What are your top 3 most caught species?", y = "Count", title = "Mex") +
+  labs(x = "What are your top 3 most caught species?", y = "Count",
+       title = "Mex n=55") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 #ggsave("q21mex.png", width = 10, height = 8, dpi = 1000)
-
-
-
-
-
 
 
 
@@ -736,23 +720,10 @@ q21speciesnusa <- data.frame(spp, sppn)
 ggplot(data=q21speciesnusa, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "darkred") +
   theme_classic() +
-  labs(x = "What are your top 3 most caught species?", y = "Count", title = "USA") +
+  labs(x = "What are your top 3 most caught species?", y = "Count",
+       title = "USA n=106") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 #ggsave("q21usa.png", width = 10, height = 8, dpi = 1000)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1002,7 +973,8 @@ q47speciesnall <- data.frame(spp, sppn)
 ggplot(data=q47speciesnall, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "steelblue") +
   theme_classic() +
-  labs(x = "What are your 3 top target species?", y = "Count") +
+  labs(x = "What are your 3 top target species?", y = "Count",
+       title = "All n=162") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 #ggsave("q47all.png", width = 10, height = 8, dpi = 1000)
 
@@ -1182,7 +1154,8 @@ q47speciesnmex <- data.frame(spp, sppn)
 ggplot(data=q47speciesnmex, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "darkgreen") +
   theme_classic() +
-  labs(x = "What are your 3 top target species?", y = "Count", title = "Mex") +
+  labs(x = "What are your 3 top target species?", y = "Count",
+       title = "Mex n=55") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 #ggsave("q47mex.png", width = 10, height = 8, dpi = 1000)
 
@@ -1362,16 +1335,74 @@ q47speciesnusa <- data.frame(spp, sppn)
 ggplot(data=q47speciesnusa, aes(x=spp, y=sppn)) +
   geom_bar(stat="identity", fill = "darkred") +
   theme_classic() +
-  labs(x = "What are your 3 top target species?", y = "Count", title = "USA") +
+  labs(x = "What are your 3 top target species?", y = "Count",
+       title = "USA n=106") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 #ggsave("q47usa.png", width = 10, height = 8, dpi = 1000)
 
 
 
 
+
+
+
+
+
 #### end Q47
 ################################################################################
+######## Q12 How do you travel to where you go fishing?
+table(dat$Q12)
+table(dat$Q12_5_TEXT)
+nrow(dat) - nrow(dat[dat$Q12 == "Unanswered",]) # people that answered
+nrow(dat) - nrow(dat[dat$Q12_5_TEXT == "Unanswered",]) # people that answered
+
+## will do new dataframe manually 
+Method <- c("Bus", "Personal Vehicle", "Plane", "Rented Vehicle", "Bike", "Boat",
+            "Walking", "Personal Dock","Motorcycle",
+            "Personal Vehicle + Airplane","Boat then Wade","Borrowed Vehicle")
+All <- c(1,143,3,4,1,1,2,1,1,2,1,1) 
+1+143+3+4+1+1+2+1+1+2+1+1 #sample size
+
+table(usa$Q12)
+table(usa$Q12_5_TEXT)
+
+USA <-c(0,97,2,0,1,1,0,1,0,2,1,0)
+
+table(mex$Q12)
+table(mex$Q12_5_TEXT)
+
+MEX <- c(1,46,1,3,0,0,2,0,1,0,0,1)
+
+
+q12answersall <- cbind(Method, All, USA, MEX)
+q12answersall <- as.data.frame(q12answersall)
+q12answersall
+
+
+library(gridExtra)
+grid.table(q12answersall)
 
 
 
+pdf("q12answersall.pdf", height=11, width=8.5)
+
+library(gtable)
+g <- tableGrob(q12answersall, rows = NULL)
+g <- gtable_add_grob(g,
+                     grobs = rectGrob(gp = gpar(fill = NA, lwd = 2)),
+                     t = 2, b = nrow(g), l = 1, r = ncol(g))
+g <- gtable_add_grob(g,
+                     grobs = rectGrob(gp = gpar(fill = NA, lwd = 2)),
+                     t = 1, l = 1, r = ncol(g))
+grid.draw(g)
+dev.off()
+
+
+
+
+
+
+
+# END q12
+################################################################################
 
