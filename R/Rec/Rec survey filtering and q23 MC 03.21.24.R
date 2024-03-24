@@ -33,6 +33,10 @@ nrow(zeroes) # number of surveys with progress = 0
 dat <- dat[dat$Progress > 0,]
 nrow(dat) ## survey sample size after filtering for zeroes
 
+################################################################################
+## Demographics
+## Hannah Henry
+
 
 
 ################################################################################
