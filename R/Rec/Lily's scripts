@@ -7,6 +7,7 @@ library(tidyverse)
 library(likert)
 library(readr)
 library(ggplot2)
+library(reshape2)
 
 #####MANUELS FILTERING CODE####
 # Read the data
@@ -161,4 +162,86 @@ ggplot(mean_rankings_melted31, aes(x = Factor, y = value, fill = variable)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-  
+
+#QUESTION 29
+
+Q29usa <- usa[, c("Q29")]
+Q29mex <- mex[, c("Q29")]
+
+# Remove rows with NA values
+Q29usa <- na.omit(Q29usa)
+Q29mex <- na.omit(Q29mex)
+
+
+# Calculate the proportions of "Yes" and "No" responses for USA
+Q29usa_counts <- table(Q29usa)
+Q29usa_percent <- prop.table(Q29usa_counts) * 100
+
+# Calculate the proportions of "Yes" and "No" responses for Mexico
+Q29mex_counts <- table(Q29mex)
+Q29mex_percent <- prop.table(Q29mex_counts) * 100
+
+# Combine the data into a single data frame
+df <- data.frame(
+  Country = c(rep("USA", length(Q29usa_percent)), rep("Mexico", length(Q29mex_percent))),
+  Response = c(names(Q29usa_percent), names(Q29mex_percent)),
+  Percent = c(Q29usa_percent, Q29mex_percent)
+)
+
+# Plot
+ggplot(df, aes(x = Response, y = Percent, fill = Country)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Q29: Would you be willing to pay for a conservation program that preserves your top ranked choice?",
+       x = "Response", y = "Percent of Respondents") +
+  scale_fill_manual(values = c("USA" = "blue", "Mexico" = "green")) +
+  theme_minimal()
+
+
+#QUESTION 30 (USA WTP),62 (MEX WTP) (63 is Cuba WTP so omitting)
+
+# Calculate the mean of responses of willingness to pay for each country
+
+# Convert to numeric if needed
+WTPusa <- as.numeric(as.character(WTPusa))
+WTPmex <- as.numeric(as.character(WTPmex))
+
+# Define exchange rate
+exchange_rate <- 16.68
+
+# Convert values from pesos to USD
+WTPmex_usd <- WTPmex / exchange_rate
+
+# Remove NA values
+WTPusa <- na.omit(WTPusa)
+WTPmex_usd <- na.omit(WTPmex_usd)
+
+# Calculate the mean of responses for each country
+meanWTP_usa <- mean(WTPusa)
+meanWTP_mex <- mean(WTPmex_usd)
+
+# Sample sizes for each country
+sample_size_usa <- length(WTPusa)
+sample_size_mex <- length(WTPmex_usd)
+
+# Range of responses
+rangeWTP_usa <- paste(range(WTPusa), collapse = " - ")
+rangeWTP_mex <- paste(range(WTPmex_usd), collapse = " - ")
+
+# Create a data frame for plotting
+df2 <- data.frame(
+  Country = c("USA", "Mexico"),
+  Mean_Value = c(meanWTP_usa, meanWTP_mex),
+  Sample_Size = c(sample_size_usa, sample_size_mex),
+  Range = c(rangeWTP_usa, rangeWTP_mex)
+)
+
+# Plot
+ggplot(df2, aes(x = Country, y = Mean_Value, fill = Country)) +
+  geom_bar(stat = "identity") +
+  geom_text(data = df2, aes(label = paste("n =", Sample_Size)), vjust = 1.5, size = 3, position = position_dodge(0.9)) +
+  geom_text(data = df2, aes(label = paste("Range:", Range)), vjust = -0.5, size = 3, position = position_dodge(0.9)) +
+  labs(title = "Average Value of Responses in USA vs Mexico",
+       x = "Country", y = "Average Value") +
+  scale_y_continuous(limits = c(0, 25)) +  # Setting y-axis limits
+  theme_minimal()
+
