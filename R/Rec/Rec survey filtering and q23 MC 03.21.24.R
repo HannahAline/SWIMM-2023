@@ -34,12 +34,6 @@ dat <- dat[dat$Progress > 0,]
 nrow(dat) ## survey sample size after filtering for zeroes
 
 ################################################################################
-## Demographics
-## Hannah Henry
-
-
-
-################################################################################
 ## creating country-specific datasets for USA and MX based on Q44 asking where they reside
 table(dat$Q44)
 
