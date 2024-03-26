@@ -3,7 +3,7 @@
 ### started on 3/21/24
 
 ## upload dataset WITH HEADERS ON
-dat <- `Recreational.Anglers.(Pescadores.recreativos)_March.15,.2024_12.00`
+dat <- read.csv("C:\\Users\\manue\\OneDrive\\Desktop\\SWIMM data analyses\\Recreational Anglers (Pescadores recreativos)_March 15, 2024_12.00.csv", header = TRUE)
 
 ### Deleting unnecessary columns and rows
 dat$StartDate <- NULL
@@ -1960,6 +1960,251 @@ ggplot(data=q15techsmex, aes(x=techs, y=techsn)) +
 
 ### END q15
 ################################################################################
+### Q16	How many sport fishing tournaments do you attend each year? - Selected Choice
+### Q16_5_TEXT	How many sport fishing tournaments do you attend each year? - 
+### More than 20 - Text
+table(dat$Q16)
+table(dat$Q16_5_TEXT) # only one answer
+
+q16answered <- dat[grep("Unanswered", dat$Q16, invert = TRUE), ]
+table(q16answered$Q16)
+nrow(q16answered) # number of surveys that answered Q16
+table(q16answered$Q44) # surveys by country
+
+q16answersall <- as.data.frame(table(q16answered$Q16))
+q16answersall$Var1 <- as.character(q16answersall$Var1)
+q16answersall[3,1] <- "< 5"
+q16answersall[4,1] <- "> 20"
+
+q16answersall$Var1 <- as.factor(q16answersall$Var1)
+levels(q16answersall$Var1)
+q16answersall$Var1 <- factor(q16answersall$Var1, levels=c('None',
+                                                          '< 5',
+                                                          '5 - 10',
+                                                          '10 - 20',
+                                                          '> 20'))
+q16answersall
+
+
+ggplot(data=q16answersall, aes(x=Var1, y=Freq)) +
+  geom_bar(stat="identity", fill = "steelblue") +
+  theme_classic() +
+  labs(x = "How many sport fishing tournaments do you attend each year?",
+       y = "Count",title = "All n=162") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q16all.png", width = 10, height = 8, dpi = 1000)
+
+
+#### usa
+q16answeredusa <- q16answered[q16answered$Q44 == "United States",]
+nrow(q16answeredusa) #usa sample size
+
+q16answersusa <- as.data.frame(table(q16answeredusa$Q16))
+q16answersusa$Var1 <- as.character(q16answersusa$Var1)
+q16answersusa
+q16answersusa[3,1] <- "< 5"
+q16answersusa[4,1] <- "> 20"
+
+q16answersusa$Var1 <- as.factor(q16answersusa$Var1)
+levels(q16answersusa$Var1)
+q16answersusa$Var1 <- factor(q16answersusa$Var1, levels=c('None',
+                                                          '< 5',
+                                                          '5 - 10',
+                                                          '10 - 20',
+                                                          '> 20'))
+q16answersusa
+
+
+ggplot(data=q16answersusa, aes(x=Var1, y=Freq)) +
+  geom_bar(stat="identity", fill = "darkred") +
+  theme_classic() +
+  labs(x = "How many sport fishing tournaments do you attend each year?",
+       y = "Count",title = "USA n=106") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q16usa.png", width = 10, height = 8, dpi = 1000)
+
+
+
+#### mex
+q16answeredmex <- q16answered[q16answered$Q44 == "Mexico",]
+nrow(q16answeredmex) #mex sample size
+
+q16answersmex <- as.data.frame(table(q16answeredmex$Q16))
+q16answersmex$Var1 <- as.character(q16answersmex$Var1)
+q16answersmex
+q16answersmex[3,1] <- "< 5"
+q16answersmex[5,1] <- "> 20" # adding this category since there weren't any answers for it
+q16answersmex[5,2] <- 0
+
+q16answersmex$Var1 <- as.factor(q16answersmex$Var1)
+levels(q16answersmex$Var1)
+q16answersmex$Var1 <- factor(q16answersmex$Var1, levels=c('None',
+                                                          '< 5',
+                                                          '5 - 10',
+                                                          '10 - 20',
+                                                          '> 20'))
+q16answersmex
+
+ggplot(data=q16answersmex, aes(x=Var1, y=Freq)) +
+  geom_bar(stat="identity", fill = "darkgreen") +
+  theme_classic() +
+  labs(x = "How many sport fishing tournaments do you attend each year?",
+       y = "Count",title = "Mex n=55") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q16mex.png", width = 10, height = 8, dpi = 1000)
+
+
+
+
+
+
+
+#### END q16
+################################################################################
+### Q17	In the last year, how much have you paid individually to enter fishing
+### tournaments? - Selected Choice
+### Q17_6_TEXT	In the last year, how much have you paid individually to enter 
+### fishing tournaments? - More than $5,000 USD (Please specify) - Text
+### *** usa only
+table(dat$Q17)
+table(dat$Q17_6_TEXT)
+
+q17answered <- dat[grep("Unanswered", dat$Q17, invert = TRUE), ]
+table(q17answered$Q17)
+nrow(q17answered) # number of surveys that answered Q16
+table(q17answered$Q44) # surveys by country
+
+q17usa <- q17answered[q17answered$Q44 == "United States",]
+table(q17usa$Q17)
+
+## confirming Mexico and Cuba were all blank
+q17mex <- q17answered[q17answered$Q44 == "Mexico",]
+table(q17mex$Q17)
+
+q17cub <- q17answered[q17answered$Q44 == "Cuba",]
+table(q17cub$Q17)
+
+
+
+#### usa
+nrow(q17usa) #usa sample size
+
+q17usa <- as.data.frame(table(q17usa$Q17))
+q17usa$Var1 <- as.character(q17usa$Var1)
+q17usa
+q17usa[1,1] <- "Left blank"
+q17usa[5,1] <- "< $250 USD"
+q17usa[6,1] <- "> $5,000 USD"
+
+q17usa$Var1 <- as.factor(q17usa$Var1)
+levels(q17usa$Var1)
+q17usa$Var1 <- factor(q17usa$Var1, levels=c('< $250 USD','$250 - $500 USD',
+                                                          '$500 - $1,000 USD',
+                                                          '$2,500 - $5,000 USD',
+                                                          '> $5,000 USD',
+                                            'Left blank'))
+q17usa
+
+ggplot(data=q17usa, aes(x=Var1, y=Freq)) +
+  geom_bar(stat="identity", fill = "darkred") +
+  theme_classic() +
+  labs(x = "In the last year, how much have you paid individually to enter fishing tournaments?",
+       y = "Count",title = "USA n=106") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q17usa.png", width = 10, height = 8, dpi = 1000)
+
+
+
+
+
+
+
+
+### END q17
+################################################################################
+### Q51	In the last year, how much have you paid individually to enter fishing 
+### tournaments? - Selected Choice
+### Q51_6_TEXT	In the last year, how much have you paid individually to enter 
+### fishing tournaments? - More than $10,000 MX (Please specify) - Text
+### *** for MEX only
+table(dat$Q51)
+table(dat$Q51_6_TEXT) # no additional text entries
+
+q51answered <- dat[grep("Unanswered", dat$Q51, invert = TRUE), ]
+table(q51answered$Q51)
+nrow(q51answered) # number of surveys that answered Q51
+table(q51answered$Q44) # surveys by country
+
+q51mex <- q51answered[q51answered$Q44 == "Mexico",]
+table(q51mex$Q51)
+
+## confirming USA and Cuba were all blank
+q51usa <- q51answered[q51answered$Q44 == "United States",]
+table(q51usa$Q51)
+
+q51cub <- q51answered[q51answered$Q44 == "Cuba",]
+table(q51cub$Q51)
+
+
+#### usa
+nrow(q51mex) #mex sample size
+
+q51mex <- as.data.frame(table(q51mex$Q51))
+q51mex$Var1 <- as.character(q51mex$Var1)
+q51mex
+q51mex[1,1] <- "Left blank"
+q51mex[6,1] <- "< $500 MX"
+q51mex[7,1] <- "> $10,000 MX"
+
+q51mex$Var1 <- as.factor(q51mex$Var1)
+levels(q51mex$Var1)
+q51mex$Var1 <- factor(q51mex$Var1, levels=c('< $500 MX','$500 - $1,500 MX',
+                                            '$1,500 - $3,000 MX',
+                                            '$3,000 - $5,000 MX',
+                                            '$5,000 - $10,000 MX',
+                                            '> $10,000 MX',
+                                            'Left blank'))
+q51mex
+
+ggplot(data=q51mex, aes(x=Var1, y=Freq)) +
+  geom_bar(stat="identity", fill = "darkgreen") +
+  theme_classic() +
+  labs(x = "In the last year, how much have you paid individually to enter fishing tournaments?",
+       y = "Count",title = "Mex n=55") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q51mex.png", width = 10, height = 8, dpi = 1000)
+
+
+
+
+
+
+
+### end q51
+################################################################################
+### Q72	In the last year, how much have you paid individually to enter fishing
+### tournaments? - Selected Choice
+### Q72_6_TEXT	In the last year, how much have you paid individually to enter 
+### fishing tournaments? - More than $10,000 CUP (Please specify) - Text
+### *** for cuba only???
+table(dat$Q72)
+table(dat$Q72_6_TEXT) # no additional text entries
+
+q72answered <- dat[grep("Unanswered", dat$Q72, invert = TRUE), ]
+table(q72answered$Q72)
+nrow(q72answered) # number of surveys that answered Q72
+table(q72answered$Q44) # surveys by country
+
+#### all the answers are coming from Mexico. Look into this
+q72mex <- q72answered[q72answered$Q44 == "Mexico",]
+table(q72mex$Q72)
+
+## confirming USA and Cuba were all blank
+q72usa <- q72answered[q72answered$Q44 == "United States",]
+table(q72usa$Q72)
+
+q72cub <- q72answered[q72answered$Q44 == "Cuba",]
+table(q72cub$Q72)
 
 
 
@@ -1969,3 +2214,135 @@ ggplot(data=q15techsmex, aes(x=techs, y=techsn)) +
 
 
 
+#### end Q72
+################################################################################
+### Q18	Where do you usually buy your fishing gear/items? (Select all that apply)
+table(dat$Q18)
+
+q18answered <- dat[grep("Unanswered", dat$Q18, invert = TRUE), ]
+table(q18answered$Q18)
+nrow(q18answered) # number of surveys that answered Q18
+table(q18answered$Q44) # surveys by country
+
+### city
+city <- q18answered[grep("city", q18answered$Q18), ]
+city$Q18
+nrow(city) #sample size of surveys that include city
+
+### Traveling
+traveling <- q18answered[grep("traveling", q18answered$Q18), ]
+traveling$Q18
+nrow(traveling) #sample size of surveys that include traveling
+
+##internet
+internet <- q18answered[grep("Internet", q18answered$Q18), ]
+internet$Q18
+nrow(internet) #sample size of surveys that include Internet
+
+## do not buy gear
+gear <- q18answered[grep("gear", q18answered$Q18), ]
+gear$Q18
+nrow(gear) #sample size of surveys that include gear
+
+### bar plot 
+where <- c("Fishing shop in my city","Fishing shop where I'm traveling",
+           "Internet","I do not buy my gear")
+wheren <- c(nrow(city),nrow(traveling),nrow(internet),nrow(gear))
+q18all <- data.frame(where,wheren)
+q18all
+
+ggplot(data=q18all, aes(x=where, y=wheren)) +
+  geom_bar(stat="identity", fill = "steelblue") +
+  theme_classic() +
+  labs(x = "Where do you usually buy your fishing gear/items?",
+       y = "Count",title = "All n=162") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q18all.png", width = 10, height = 8, dpi = 1000)
+
+
+## usa
+q18answeredusa <- q18answered[q18answered$Q44 == "United States",]
+nrow(q18answeredusa)
+
+### city
+city <- q18answeredusa[grep("city", q18answeredusa$Q18), ]
+city$Q18
+nrow(city) #sample size of surveys that include city
+
+### Traveling
+traveling <- q18answeredusa[grep("traveling", q18answeredusa$Q18), ]
+traveling$Q18
+nrow(traveling) #sample size of surveys that include traveling
+
+##internet
+internet <- q18answeredusa[grep("Internet", q18answeredusa$Q18), ]
+internet$Q18
+nrow(internet) #sample size of surveys that include Internet
+
+## do not buy gear
+gear <- q18answeredusa[grep("gear", q18answeredusa$Q18), ]
+gear$Q18
+nrow(gear) #sample size of surveys that include gear
+
+### bar plot 
+where <- c("Fishing shop in my city","Fishing shop where I'm traveling",
+           "Internet","I do not buy my gear")
+wheren <- c(nrow(city),nrow(traveling),nrow(internet),nrow(gear))
+q18usa <- data.frame(where,wheren)
+q18usa
+
+ggplot(data=q18usa, aes(x=where, y=wheren)) +
+  geom_bar(stat="identity", fill = "darkred") +
+  theme_classic() +
+  labs(x = "Where do you usually buy your fishing gear/items?",
+       y = "Count",title = "USA n=106") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q18usa.png", width = 10, height = 8, dpi = 1000)
+
+
+### mex
+q18answeredmex <- q18answered[q18answered$Q44 == "Mexico",]
+nrow(q18answeredmex)
+
+### city
+city <- q18answeredmex[grep("city", q18answeredmex$Q18), ]
+city$Q18
+nrow(city) #sample size of surveys that include city
+
+### Traveling
+traveling <- q18answeredmex[grep("traveling", q18answeredmex$Q18), ]
+traveling$Q18
+nrow(traveling) #sample size of surveys that include traveling
+
+##internet
+internet <- q18answeredmex[grep("Internet", q18answeredmex$Q18), ]
+internet$Q18
+nrow(internet) #sample size of surveys that include Internet
+
+## do not buy gear
+gear <- q18answeredmex[grep("gear", q18answeredmex$Q18), ]
+gear$Q18
+nrow(gear) #sample size of surveys that include gear
+
+### bar plot 
+where <- c("Fishing shop in my city","Fishing shop where I'm traveling",
+           "Internet","I do not buy my gear")
+wheren <- c(nrow(city),nrow(traveling),nrow(internet),nrow(gear))
+q18mex <- data.frame(where,wheren)
+q18mex
+
+ggplot(data=q18mex, aes(x=where, y=wheren)) +
+  geom_bar(stat="identity", fill = "darkgreen") +
+  theme_classic() +
+  labs(x = "Where do you usually buy your fishing gear/items?",
+       y = "Count",title = "Mex n=55") +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+#ggsave("q18mex.png", width = 10, height = 8, dpi = 1000)
+
+
+
+
+
+
+### end q18
+###############################################################################
