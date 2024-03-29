@@ -156,10 +156,35 @@ ggplot(data = dat[!is.na(dat$Q35), ], aes(x = Q35, fill = Q35)) +
 #-------------------------------------------------------------------------------
 
 #state - 50 States, D.C. and Puerto Rico 
-dat$state = as.numeric(dat$state)
+dat$state = as.factor(dat$state)
+# Check levels 
+levels(dat$state)
+#Removing unecessary levels
+dat$state <- droplevels(dat$state, exclude = "")
+dat$state <- droplevels(dat$state, exclude = "I do not reside in the United States") #Not needed
+
+#Count the number of respondents from each state
+state_counts <- table(dat$state)
+
+#New data frame with state counts
+state_counts_df <- data.frame(State = names(state_counts), Respondent_Count = as.numeric(state_counts))
+
+#Reorder the levels of State to match the desired order
+state_counts_df$State <- factor(state_counts_df$State, levels = c("Alabama", "California", "Florida", "Georgia", "Hawaii", "Illinois", "Kentucky", "Louisiana", "Mississippi", "New Hampshire", "North Carolina", "Ohio", "Oregon", "Tennessee", "Texas", NA))
 
 #Still figuring out how to best display...
 
+# New green blue colors for the pie chart
+green_blue_palette <- colorRampPalette(c("green", "blue"))(length(state_counts_df$State))
+
+#Pie chart for state
+ggplot(state_counts_df, aes(x = "", y = Respondent_Count, fill = State)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  labs(title = "Distribution of Respondents by State") +
+  scale_fill_manual(values = setNames(green_blue_palette, state_counts_df$State)) +
+  theme_void() +
+  theme(legend.position = "bottom")  # Move legend to bottom
 #-------------------------------------------------------------------------------
 #Q47 - In which state do you currently reside?
 dat$Q47 = as.factor(dat$Q47)
