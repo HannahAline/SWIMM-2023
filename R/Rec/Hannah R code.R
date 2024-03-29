@@ -29,7 +29,7 @@ dat$DistributionChannel <- NULL
 dat$UserLanguage <- NULL
 dat$Q_RecaptchaScore <- NULL
 
-# Remove rows 1 and 2
+#Remove rows 1 and 2
 dat <- dat[-c(1, 2), ]
 
 ### delete surveys with progress = 0
@@ -83,16 +83,16 @@ dat$Q66 = as.factor(dat$Q66)
 levels(dat$Q66)
 #Removing unecessary levels
 dat$Q66 <- droplevels(dat$Q66, exclude = "")
-dat$Q66 <- droplevels(dat$Q66, exclude = "What country are you currently in, and/or where do you do most of your fishing?")
 
-# Bar plot for the distribution of respondents across countries
+# Bar plot for Q66
 ggplot(data = dat[!is.na(dat$Q66), ], aes(x = Q66, fill = Q66)) +
   geom_bar() +
-  labs(title = "Distribution of Respondents by Country",
+  labs(title = "What country are you currently in, and/or where do you do most of your fishing?",
        x = "Country",
        y = "Count") +
   theme_minimal() +
-  scale_fill_manual(values = blue_scale_colors)
+  scale_fill_manual(values = blue_scale_colors) #Need to fix color mismatch
+
 #-------------------------------------------------------------------------------
 #Q44 - What country do you currently reside in?
 dat$Q44 = as.factor(dat$Q44)
@@ -100,7 +100,6 @@ dat$Q44 = as.factor(dat$Q44)
 levels(dat$Q44)
 #Removing unecessary levels
 dat$Q44 <- droplevels(dat$Q44, exclude = "")
-dat$Q44 <- droplevels(dat$Q44, exclude = "What country do you currently reside in?")
 
 # Bar plot for the distribution of respondents across countries of residence
 ggplot(data = dat[!is.na(dat$Q44), ], aes(x = Q44, fill = Q44)) +
