@@ -61,7 +61,7 @@ blue_scale_colors <- colorRampPalette(c("lightblue", "darkblue"))(5)
 #Question by question cleaning and graphs
 
 #-------------------------------------------------------------------------------
-#Q32 - What year were you born? 
+#Q32 - What year were you born? [FINAL]
 dat$Q32 = as.numeric(dat$Q32)
 
 summary(dat$Q32) #Some people entered years wrong, need to fix
@@ -101,31 +101,30 @@ levels(dat$Q44)
 #Removing unecessary levels
 dat$Q44 <- droplevels(dat$Q44, exclude = "")
 
-# Bar plot for the distribution of respondents across countries of residence
+# Bar plot for Q44
 ggplot(data = dat[!is.na(dat$Q44), ], aes(x = Q44, fill = Q44)) +
   geom_bar() +
-  labs(title = "Distribution of Respondents by Country of Residence",
+  labs(title = "What country do you currently reside in?",
        x = "Country",
        y = "Count") +
   theme_minimal() +
-  scale_fill_manual(values = blue_scale_colors)
+  scale_fill_manual(values = blue_scale_colors) #Need to fix color mismatch
 #-------------------------------------------------------------------------------
-#Q67 - Please indicate your race. - Selected Choice
+#Q67 - Please indicate your race. - Selected Choice [FINAL]
 dat$Q67 = as.factor(dat$Q67)
 # Check levels 
 levels(dat$Q67)
 #Removing unecessary levels
 dat$Q67 <- droplevels(dat$Q67, exclude = "")
-dat$Q67 <- droplevels(dat$Q67, exclude = "Please indicate your race. - Selected Choice")
 
-#Bar plot for the distribution of respondents across races
+# Bar plot for Q67
 ggplot(data = dat[!is.na(dat$Q67), ], aes(x = Q67, fill = Q67)) +
   geom_bar() +
-  labs(title = "Distribution of Respondents by Race",
+  labs(title = "Please indicate your race.",
        x = "Race",
        y = "Count") +
   theme_minimal() +
-  scale_fill_manual(values = blue_scale_colors)
+  scale_fill_manual(values = blue_scale_colors) #Colors match on this one
 #-------------------------------------------------------------------------------
 #Q67_5_TEXT - Please indicate your race. - Other (fill in) - Text
 dat$Q67_5_TEXT = as.factor(dat$Q67_5_TEXT)
