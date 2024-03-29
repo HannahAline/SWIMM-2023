@@ -76,6 +76,7 @@ ggplot(data = dat, aes(x = Q32)) +
        x = "Birth Year",
        y = "Count") +
   theme_minimal()
+
 #-------------------------------------------------------------------------------
 #Q66 - What country are you currently in, and/or where do you do most of your fishing?
 dat$Q66 = as.factor(dat$Q66)
@@ -109,6 +110,7 @@ ggplot(data = dat[!is.na(dat$Q44), ], aes(x = Q44, fill = Q44)) +
        y = "Count") +
   theme_minimal() +
   scale_fill_manual(values = blue_scale_colors) #Need to fix color mismatch
+
 #-------------------------------------------------------------------------------
 #Q67 - Please indicate your race. - Selected Choice [FINAL]
 dat$Q67 = as.factor(dat$Q67)
@@ -125,19 +127,40 @@ ggplot(data = dat[!is.na(dat$Q67), ], aes(x = Q67, fill = Q67)) +
        y = "Count") +
   theme_minimal() +
   scale_fill_manual(values = blue_scale_colors) #Colors match on this one
+
 #-------------------------------------------------------------------------------
 #Q67_5_TEXT - Please indicate your race. - Other (fill in) - Text
 dat$Q67_5_TEXT = as.factor(dat$Q67_5_TEXT)
 
+#-------------------------------------------------------------------------------
 #Q34 - Do you identify with Latino, Hispanic, or Spanish origin?
 dat$Q34 = as.factor(dat$Q34)
 
+#-------------------------------------------------------------------------------
 #Q35 - Please indicate your gender.
 dat$Q35 = as.factor(dat$Q35)
+
+# Check levels 
+levels(dat$Q35)
+#Removing unecessary levels
+dat$Q35 <- droplevels(dat$Q35, exclude = "")
+
+# Bar plot for Q35
+ggplot(data = dat[!is.na(dat$Q35), ], aes(x = Q35, fill = Q35)) +
+  geom_bar() +
+  labs(title = "Please indicate your gender.",
+       x = "Gender",
+       y = "Count") +
+  theme_minimal() +
+  scale_fill_manual(values = blue_scale_colors) #Need to fix color mismatch
+#-------------------------------------------------------------------------------
 
 #state - 50 States, D.C. and Puerto Rico 
 dat$state = as.numeric(dat$state)
 
+#Still figuring out how to best display...
+
+#-------------------------------------------------------------------------------
 #Q47 - In which state do you currently reside?
 dat$Q47 = as.factor(dat$Q47)
 
