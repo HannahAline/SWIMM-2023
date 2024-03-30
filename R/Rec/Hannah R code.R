@@ -4,6 +4,8 @@
 ## upload dataset 
 dat <- read.csv(file.choose())
 
+dat$summary = as.numeric(dat$summary)
+summary(dat$Progress)
 
 #Add headers
 names(dat) ### column headers of data file
